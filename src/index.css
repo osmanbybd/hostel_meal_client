@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+.bg-image {
+  background-image: url(../src/assets/login-bf.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* Dark overlay effect */
+.bg-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* 0.6 মানে 60% dark */
+  z-index: 0;
+}
+
+
+
+.breakfast{
+  background-image: url(breakfast.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+    /* opacity: 0.8; */
+     /* filter: brightness(60%); */
+}
+.lunch{
+  background-image: url(lunch.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+   /* filter: brightness(60%); */
+
+}
+.dinner{
+  background-image: url(dinner.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+   /* filter: brightness(60%); */
+
+}

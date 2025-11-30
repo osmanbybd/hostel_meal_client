@@ -1,12 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MealDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-
+ const queryClient = useQueryClient();
+const [hasLikes, setHasLikes] = useState(false)
   const { data: meal = {}, isLoading } = useQuery({
     queryKey: ["meal", id],
     queryFn: async () => {
@@ -14,6 +15,33 @@ const MealDetails = () => {
       return res.data;
     },
   });
+
+
+
+  const { title, image, price, description, category, ingredients, _id , likes} = meal;
+
+
+ const {mutate : likeMeal} = useMutation({
+  mutationFn: async()=> {
+    const res = await axiosSecure.patch(`/meals/like/${id}`)
+    return res?.data
+  },
+   onMutate: async () => {
+
+    // UI instant +1
+    queryClient.setQueryData(['meal', id], old => ({
+      ...old,
+      likes: old.likes + 1
+    }));
+
+
+  },
+    onSuccess: (data) => {      
+      setHasLikes(true)
+      queryClient.invalidateQueries(['meal', id])
+    },
+
+ })
 
   if (isLoading) {
     return (
@@ -23,7 +51,11 @@ const MealDetails = () => {
     );
   }
 
-  const { title, image, price, description, category, ingredients } = meal;
+
+
+ const handleLike = () => {
+    likeMeal()
+  }
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
@@ -82,7 +114,8 @@ const MealDetails = () => {
 
         {/* Action Button */}
         <div className="mt-8">
-          <button
+       <div>
+           <button
             className="
             px-7 py-2 bg-[#d40036] hover:bg-[#b8002f] 
             text-white font-semibold rounded-lg shadow-lg 
@@ -91,6 +124,10 @@ const MealDetails = () => {
           >
             Add to Cart
           </button>
+       </div>
+       <div>
+        <button className="btn btn-primary"  onClick={handleLike} disabled={hasLikes}>like {likes}</button>
+       </div>
         </div>
       </div>
     </div>

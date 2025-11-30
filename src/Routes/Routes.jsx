@@ -9,6 +9,7 @@ import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
 import Statistic from "../Pages/Dashboard/Statistic/Statistic";
 import AddMealForm from "../Pages/Dashboard/Form/AddMealForm";
 import MealDetails from "../Pages/MealCard/MealDetails";
+import AllMealCard from "../Pages/MealCard/AllMealCard";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path:'/meal/:id',
         element:<MealDetails></MealDetails>
+      },
+      {
+        path:'/allMeals',
+        element:<AllMealCard></AllMealCard>
       }
     ],
   },
